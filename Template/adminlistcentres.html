@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Admin List of Vaccine Centres</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">District</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for centre in vaccine_centres %}
+            <tr>
+                <td>{{ centre.name }}</td>
+                <td>{{ centre.address }}</td>
+                <td>{{ centre.district }}</td>
+                
+                <td>
+                    
+                    <a class="btn btn-primary btn-sm" href="{% url 'adddosage' centre.pk %}" role="button">Add Dosage</a>
+                    <a class="btn btn-secondary btn-sm" href="{% url 'dosagelist' centre.pk %}" role="button">Dosage List</a>
+                    <a class="btn btn-warning btn-sm" href="{% url 'updatecentre' centre.pk %}" role="button">Update Centre</a>
+                    
+                    <a class="btn btn-danger btn-sm" href="{% url 'removecentre' centre.pk %}" role="button">Delete</a>
+                    
+                    <a class="btn btn-warning btn-sm" href="{% url 'slotlist' centre.pk %}" role="button"> Slot List</a>
+                    <a class="btn btn-primary btn-sm" href="{% url 'slotcreate' centre.pk %}" role="button">Create Slot</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

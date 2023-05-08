@@ -1,0 +1,29 @@
+<!-- slot_list.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ centre.name }} Slots</h1>
+  {% if slots %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Available Slots</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for slot in slots %}
+          <tr>
+            <td>{{ slot.date }}</td>
+            <td>{{ slot.available_slots }}</td>
+            <td><a class="btn btn-danger btn-sm" href="{% url 'slotdelete' slot.pk %}" role="button">Delete</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No slots available.</p>
+  {% endif %}
+{% endblock %}

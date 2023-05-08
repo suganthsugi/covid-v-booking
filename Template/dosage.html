@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+<br><br><br>
+
+<h1>Dosages for {{ centre.name }}</h1>
+
+{% block content %}
+
+
+{% if dosages %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Dose Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dosage in dosages %}
+                <tr>
+                    <td>{{ dosage.name }}</td>
+                    <td>{{ dosage.dose_amount }}</td>
+                    <td>{{ dosage.date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No dosages found.</p>
+{% endif %}
+
+{% endblock %}

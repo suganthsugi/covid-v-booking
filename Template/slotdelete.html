@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Remove Slot</h1>
+<form method="post">
+  {% csrf_token %}
+  <p>Are you sure you want to remove this slot?</p>
+  <div class="form-group">
+    <label for="{{ slot.date.id_for_label }}">Date:</label>
+    {{ slot.date }}
+  </div>
+  <div class="form-group">
+    <label for="{{ slot.vaccine_centre.id_for_label }}">Vaccine Centre:</label>
+    {{ slot.vaccine_centre }}
+  </div>
+  <div class="form-group">
+    <label for="{{ slot.available_slots.id_for_label }}">Available Slots:</label>
+    {{ slot.available_slots }}
+  </div>
+  <button type="submit" class="btn btn-danger">Remove Slot</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}KECian | SignUp{% endblock title %}
+{% block lsbtn %}<a href="{% url 'login' %}" class="btn btn-outline-info rounded-pill">Login</a>{% endblock lsbtn %}
+{% block bgimg %}
+background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url({% static 'images/kec.jfif' %});
+background-repeat: no-repeat;
+background-size: 100% 160%;
+background-scroll: none;
+{% endblock bgimg %}
+{% block content %}
+{% if msg %}
+<div class="alert alert-{{color|safe}} alert-dismissible fade show" role="alert">
+    {{msg|safe}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 com-sm-12"></div>
+        <div class="col-lg-3 col-md-3 com-sm-12"></div>
+        <div class="col-lg-6 col-md-6 com-sm-12">
+            <div class="card border-info card-shad">
+                <div class="card-body">
+                    <center>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="{% url 'login' %}" class="btn btn-block btn-lg btn-outline-dark">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-block btn-lg btn-dark">Sign Up</a>
+                        </div>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <form class="text-dark mx-2 my-2" action="{% url 'register' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="uname" name="uname" placeholder="name@example.com" required>
+                            <label for="floatingInput"><i class="fa-solid fa-user mx-2"></i> User Name</label>
+                        </div>
+                        <p class="px-2" id="username-availability"></p>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                            <label for="floatingInput"><i class="fa-solid fa-envelope mx-2"></i> Email address</label>
+                        </div>
+                        <p class="px-2" id="email-availability"></p>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="emailotp" name="emailotp" placeholder="name@example.com"  pattern="\d{6}" maxlength="6"  required>
+                            <label for="floatingInput"><i class="fa-solid fa-key mx-2"></i> Email OTP</label>
+                        </div>
+                        <a href="{% url 'verifyEmail' %}" class="mb-3 px-2 " style="color: rgba(22, 22, 152, 0.83); text-decoration: none;"><strong>Haven't registered your email? Register here.</strong></a>
+                        <div class="form-floating mb-3 mt-3">
+                            <input type="text" class="form-control" id="fname" name="fname" placeholder="name@example.com" required>
+                            <label for="floatingInput"><i class="fa-solid fa-signature mx-2"></i> First Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="lname" name="lname" placeholder="name@example.com" required>
+                            <label for="floatingInput"><i class="fa-solid fa-signature mx-2"></i> Last Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <label for="floatingPassword1"><i class="fa-solid fa-lock mx-2"></i> Password</label>
+                            <i class="fa fa-eye icon-eye" onclick="showPassword()"></i>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                            <label for="floatingPassword2"><i class="fa-solid fa-lock mx-2"></i> Confirm Password </label>
+                        </div>
+                        <a href="{% url 'login' %}"  style="color: rgba(22, 22, 152, 0.83);; text-decoration: none;"><strong>Alredy have an account? Login.</strong></a>
+                        <p class="mb-3 text-center text-danger" id="passwordMessage"></p>
+                        <center><input type="submit" name="submit" id="submit" value="SignUp" class="btn rounded-pill btn-outline-dark px-5 py-2"></center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let passwordInput = document.getElementById("password");
+    let confirmPasswordInput = document.getElementById("confirm_password");
+    let submitBtn = document.getElementById("submit");
+    let passwordMessage = document.getElementById("passwordMessage");
+
+    passwordInput.addEventListener("input", function() {
+        checkPassword();
+    });
+
+    confirmPasswordInput.addEventListener("input", function() {
+        checkPassword();
+    });
+
+    function checkPassword() {
+        let password = passwordInput.value;
+        let confirmPassword = confirmPasswordInput.value;
+
+        let hasLength = password.length >= 8;
+        let hasLowerCase = /[a-z]/.test(password);
+        let hasUpperCase = /[A-Z]/.test(password);
+        let hasNumber = /\d/.test(password);
+        let hasSymbol = /[!@#$%^&*()]/.test(password);
+        if(password == "" && confirmPassword==""){
+        submitBtn.disabled = true;
+        }
+        if (password !== confirmPassword) {
+        passwordMessage.innerHTML = "Passwords do not match";
+        submitBtn.disabled = true;
+        } else if (!hasLength) {
+        passwordMessage.innerHTML = "Password must be at least 8 characters long";
+        submitBtn.disabled = true;
+        } else if (!hasLowerCase || !hasUpperCase || !hasNumber || !hasSymbol) {
+        passwordMessage.innerHTML = "Password must have at least 1 character, number, upper case letter, and symbol";
+        submitBtn.disabled = true;
+        } else {
+        passwordMessage.innerHTML = "";
+        submitBtn.disabled = false;
+        }
+    }
+
+    function showPassword() {
+        const password = document.getElementById("password");
+        const cpassword = document.getElementById("confirm_password");
+        if (password.type === "password") {
+        password.type = "text";
+        cpassword.type = "text";
+        } else {
+        password.type = "password";
+        cpassword.type = "password";
+        }
+    }
+    var myList = {{ alluser|safe }};
+    
+    document.getElementById("uname").addEventListener("input", function() {
+        var username = this.value;
+        var availability = document.getElementById("username-availability");
+        if(username==""){
+        availability.innerHTML = "";
+        }
+        else if (myList.includes(username)) {
+        availability.innerHTML = `&#10060; Username alredy taken`;
+        submitBtn.disabled = true;
+        }
+        else {
+        availability.innerHTML = "&#10003; Username available";
+        }
+    });
+
+    
+    let mymList = {{ allemail|safe }};
+    document.getElementById("email").addEventListener("input", function() {
+        var email = this.value;
+        var availability = document.getElementById("email-availability");
+        if(email==""){
+            availability.innerHTML = "";
+        }
+        else if (mymList.includes(email)) {
+            availability.innerHTML = `&#10060; Email alredy taken`;
+            availability.style.color = 'red';
+            submitBtn.disabled = true;
+        }
+        else {
+            availability.innerHTML = "&#10003; Email available";
+            availability.style.color = 'green';
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+{% endblock content %}

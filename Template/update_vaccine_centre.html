@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Update Vaccine Centre</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Name:</label>
+      {{ form.name }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.address.id_for_label }}">Address:</label>
+      {{ form.address }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.district.id_for_label }}">District:</label>
+      {{ form.district }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+      {{ form.phone_number }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.email.id_for_label }}">Email:</label>
+      {{ form.email }}
+    </div>
+    <button type="submit" class="btn btn-primary">Update Vaccine Centre</button>
+  </form>
+{% endblock %}

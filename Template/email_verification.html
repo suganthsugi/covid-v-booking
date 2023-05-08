@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}KEConnect | mail_verify{% endblock title %}
+{% load static%}
+{% block lsbtn %}<a href="{% url 'login' %}" class="btn btn-outline-info rounded-pill">Login</a>{% endblock lsbtn %}
+{% block bgimg %}
+background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url({% static 'images/kec.jfif' %});
+background-repeat: no-repeat;
+background-size: 100% 120%;
+animation: gradient 15s ease infinite;
+{% endblock bgimg %}
+{% block content %}
+{% if msg %}
+<div class="alert alert-{{color}} alert-dismissible fade show" role="alert">
+    {{msg}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="container my-5 mt-5">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 com-sm-12"></div>
+        <div class="col-lg-3 col-md-3 com-sm-12"></div>
+        <div class="col-lg-6 col-md-6 com-sm-12">
+            <div class="card border-info card-shad">
+                <div class="card-body">
+                    <center>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="{% url 'login' %}" class="btn btn-block btn-lg btn-outline-dark">Login</a>
+                            <a href="{% url 'verifyEmail' %}" class="btn btn-block btn-lg btn-dark">Verify Email</a>
+                            <a href="{% url 'register' %}" class="btn btn-block btn-lg btn-outline-dark">Sign Up</a>
+                        </div>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <form class="text-dark mx-2 my-2" action="{% url 'verifyEmail' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                            <label for="floatingInput"><i class="fa-solid fa-envelope mx-2"></i> Email address</label>
+                        </div>
+                        <p class="px-2" id="email-availability"></p>
+                        <a class="mb-3" style="color: rgba(22, 22, 152, 0.83); text-decoration: none;" href="{% url 'register' %}"><strong>Alredy verified email? Signup.</strong></a>
+                        <center><input type="submit" name="submit" id="submit" value="Get Email OTP" class="btn rounded-pill btn-outline-dark px-5 py-2 mt-3"></center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let mymList = {{ allemail|safe }};
+    document.getElementById("email").addEventListener("input", function() {
+        var email = this.value;
+        var availability = document.getElementById("email-availability");
+        if(email==""){
+        availability.innerHTML = "";
+        }
+        else if (mymList.includes(email)) {
+        availability.innerHTML = `&#10060; Email alredy taken`;
+        submitBtn.disabled = true;
+        }
+        else {
+        availability.innerHTML = "&#10003; Email available";
+        }
+    });
+</script>
+{% endblock content %}
